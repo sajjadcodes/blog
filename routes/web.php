@@ -14,5 +14,24 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view("posts");
+});
+
+Route::get('posts/{post}', function ($slug) {
+    // return $slug;
+    $path = __DIR__ . "/../resources/posts/{$slug}.html";
+    if(!file_exists($path)){
+        //dum and die we have also ddd() dump die and debug. For quick debugging
+        // dd("File does not exist");
+        // we can also 404
+        // abort(404);
+        //another option is redirect
+        return redirect('/');
+
+    }
+
+    $post = file_get_contents($path);
+    return view('', [
+        'post' => $post,
+    ]);
 });
