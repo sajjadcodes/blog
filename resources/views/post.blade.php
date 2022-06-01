@@ -10,8 +10,7 @@
 <body>
     
 <article>
-    <h1><a href="/post"><?= $post ?></a></h1>
-    <p></p>
+    <?= $post; ?>
 </article>
 <a href="/">Go Back</a>
 </body>
