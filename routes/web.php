@@ -1,5 +1,6 @@
 <?php
 
+use App\MOdels\Post;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,31 +15,40 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view("posts");
+    
+    // $posts = Post::all();
+    return view("posts", [
+        'posts' => 'working fine'
+    ]);
 });
 
 Route::get('posts/{post}', function($slug){
 
- 
+    // Find a post by its slug and pass it to a view called "Post"
+
+    $post = Post::find($slug);
+    return view('post', [
+        'post' => $post
+    ] );
     
-    $path = __DIR__."/../resources/posts/{$slug}.html";
+    // $path = __DIR__."/../resources/posts/{$slug}.html";
 
-    if( ! file_exists($path)) {
+    // if( ! file_exists($path)) {
 
-        dd("file does not exist");
-        return redirect('/');
-    }
+    //     dd("file does not exist");
+    //     return redirect('/');
+    // }
 
-    $post = cache()->remember("posts.{$slug}",5, function() use ($path) {
-        var_dump("file_get_contents");
-        $post = file_get_contents($path);
+    // $post = cache()->remember("posts.{$slug}",5, function() use ($path) {
+    //     var_dump("file_get_contents");
+    //     $post = file_get_contents($path);
 
-    } );
+    // } );
 
     
-    return view("posts",[
-        'post' => $post,
-    ]);
+    // return view("posts",[
+    //     'post' => $post,
+    // ]);
 })->where('post', '[A-z_\-]+');
 // Route::get('posts/{post}', function ($slug) {
 //     // return $slug;
