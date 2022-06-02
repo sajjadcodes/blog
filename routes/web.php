@@ -18,21 +18,28 @@ Route::get('/', function () {
 });
 
 Route::get('posts/{post}', function($slug){
+
+ 
     
     $path = __DIR__."/../resources/posts/{$slug}.html";
 
     if( ! file_exists($path)) {
 
-        // dd("file does not exist");
-
+        dd("file does not exist");
         return redirect('/');
     }
 
-    $post = file_get_contents($path);
+    $post = cache()->remember("posts.{$slug}",5, function() use ($path) {
+        var_dump("file_get_contents");
+        $post = file_get_contents($path);
+
+    } );
+
+    
     return view("posts",[
         'post' => $post,
     ]);
-});
+})->where('post', '[A-z_\-]+');
 // Route::get('posts/{post}', function ($slug) {
 //     // return $slug;
 //     $path = __DIR__ . "/../resources/posts/{$slug}.html";
